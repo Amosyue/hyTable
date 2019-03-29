@@ -10,7 +10,9 @@
 
     如有问题请直接在 Issues 中提，或者您发现问题并有非常好的解决方案，欢迎 PR 👍
 
+# 效果图
 
+![image](https://github.com/Amosyue/hyTable/blob/master/static/table.gif)
 
 ## 运行
 
