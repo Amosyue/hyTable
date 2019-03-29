@@ -58,6 +58,7 @@ export default {
     },
     created(){
         this.loadScriptList([],1,10)
+        console.log("sss")
     },
     methods: {
         editConfig(row){
