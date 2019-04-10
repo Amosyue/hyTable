@@ -25,6 +25,7 @@
             :highlight-current-row="highlightCurrentrow"
             :data="tableData.content"
             :key="tableKey"
+            :row-key="getRowKeys"
             v-loading="option.loading"
             size="small"
             stripe
@@ -34,7 +35,7 @@
             :header-cell-style="{background:'#efefef',height:'48px'}"
             :class="{'hy-el-table-searchValHide':isShowFilte==false}">
             <!-- 是否全选 -->
-                <el-table-column type="selection" v-if="option.selectable"></el-table-column>
+                <el-table-column type="selection" :reserve-selection="true" v-if="option.selectable"></el-table-column>
             <!-- 常规数据显示 -->
                 <el-table-column
                 v-for="item in tableHeaders"
@@ -120,9 +121,9 @@
                 type:Function,
                 default:function(){}
             },
-            'handleSelectionChange':{//点击选择事件
-                type:Function,
-                default:function(){}
+            'rowSelectionData':{
+                type:Array,
+                default:()=>[]
             },
             'filterTabKey':{//select options值集合
                 type:Object,
@@ -162,10 +163,13 @@
                 'currentPage':1,
                 'pageSize':10,
                 'checkedHeaders':[],//选中的表头集合
-                'allowChoiceHeaders':[],//
                 'filteContent':[],//总的过滤条件
                 'tableHeaders':[],
-                'sortOrder':'descending'//排序
+                'sortOrder':'descending',//排序
+                'multipleSelectionAll':[],//所有选中的数据
+                'getRowKeys'(row) {//row-key
+                    return row.id;
+                },
             }
         },
         watch:{
@@ -180,6 +184,17 @@
             }
         },
         methods:{
+            //选中功能，注意此功能结合 row-key
+            handleSelectionChange(rows) {
+                this.multipleSelectionAll = [];
+                if (rows) {
+                    rows.forEach(row => {
+                        if (row) {
+                            this.multipleSelectionAll.push(row);
+                        }
+                    });
+                }
+            },
             //高级搜索
             advancedSearch(){
                 this.isShowFilte = !this.isShowFilte
@@ -353,7 +368,7 @@
                                 <i class="sort-caret descending" on-click={sortableFunDes}></i>
                             </span>
                             <span class="headerVal">
-                                <el-select value={filteValue} size="mini"  placeholder="请选择" clearable on-change={selectChange}>
+                                <el-select value={filteValue} size="mini" filterable  placeholder="请选择" clearable on-change={selectChange}>
                                     {options.map((item, index) => {
                                         return <el-option key={index} value={item.value} label={item.label}>{item.label}</el-option>
                                     })}
@@ -470,7 +485,7 @@
            
         }
         .el-date-editor--datetimerange{
-            width:150px;
+            width:200px;
         }
     }
     .hy-el-table-searchValHide {

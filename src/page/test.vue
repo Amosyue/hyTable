@@ -1,6 +1,8 @@
 <template>
     <div style="margin:20px;">
+        <el-button type="primary" size="small" @click="getSelectionAll" >获取选中数据</el-button>
         <table-filter 
+            ref="tableFilter"
             :tableData="tableData" 
             :headers="headers"
             :filterTabKey="filterTabKey"
@@ -27,6 +29,7 @@ export default {
                 'pageSize': 20,
                 'currentPage':1,
             },
+            multipleSelection: [],//多选值
             filterTabKey:{},//表头下拉值
             settingOfTable:{
                 'loading':false,
@@ -58,9 +61,15 @@ export default {
     },
     created(){
         this.loadScriptList([],1,10)
-        console.log("sss")
     },
     methods: {
+        selectChangeRow(row){
+            console.log(row)
+        },
+        getSelectionAll(){
+             let multipleSelectionAll = this.$refs.tableFilter.multipleSelectionAll
+             console.log(multipleSelectionAll)
+        },
         editConfig(row){
             console.log("执行了编辑函数")
             console.log(row)
@@ -86,7 +95,8 @@ export default {
                         "fieldName":"date",
                         "name":"时间",
                         "type":"date",
-                        'ishide':true,
+                        'ishide':false,
+                        'width':200
                     },{
                         '_id':'2',
                         'type':'input',
@@ -146,79 +156,92 @@ export default {
                     name: '1王小虎1王小虎1王小虎1王小虎1王小虎1王小虎1王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     status:'成功',
-                    duoxuan:'多选1'
+                    duoxuan:'多选1',
+                    id:'100'
                 }, {
                     date: '2016-05-04',
                     name: '2王小虎',
                     address: '上海市普陀区金沙江路 1517 弄上海市普陀区金沙江路 1517 弄上海市普陀区金沙江路 1517 弄上海市普陀区金沙江路 1517 弄上海市普陀区金沙江路 1517 弄',
                     status:'失败',
-                    duoxuan:'多选2'
+                    duoxuan:'多选2',
+                    id:'2'
                 }, {
                     date: '2016-05-01',
                     name: '3王小虎',
                     address: '上海市普陀区金沙江路 1519 弄',
                     status:'失败',
-                    duoxuan:'多选444'
+                    duoxuan:'多选444',
+                    id:'3'
                 }, {
                     date: '2016-05-03',
                     name: '4王小虎',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'4'
                 }, {
                     date: '2016-05-03',
                     name: '6王小虎',
                     address: '上海市普陀区金沙江路 1516 弄测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'5'
                 }, {
                     date: '2016-05-03',
                     name: '5王小虎11',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'6'
                 }, {
                     date: '2016-05-03',
                     name: '9王小虎22',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'7'
                 }, {
                     date: '2016-05-03',
                     name: '8王小虎333',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'8'
                 }, {
                     date: '2016-05-03',
                     name: '7王小虎444',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'9'
                 }, {
                     date: '2016-05-03',
                     name: '6王小虎555',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'10'
                 }, {
                     date: '2016-05-03',
                     name: '王小虎666',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'11'
                 }, {
                     date: '2016-05-03',
                     name: '王小虎777',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'12'
                 }, {
                     date: '2016-05-03',
                     name: '王小虎888',
                     address: '上海市普陀区金沙江路 1516 弄',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'13'
                 }]
 
                 this.tableData = {
@@ -234,16 +257,25 @@ export default {
             this.settingOfTable.loading = true
             let _data = [{
                     date: '2016-051-022',
-                    name: '黄越1',
-                    address: '上海市普陀区金沙江路 1518 弄',
+                    name: '黄越11111111',
+                    address: '上海市11111111111',
                     status:'失败',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'1'
                 }, {
                     date: '2016-05-04',
-                    name: '黄越2',
-                    address: '上海市普陀区金沙江路 1517 弄',
+                    name: '黄越22222222222',
+                    address: '上海市2222222222222',
                     status:'成功',
-                    duoxuan:'多选'
+                    duoxuan:'多选',
+                    id:'2'
+                }, {
+                    date: '2016-05-04',
+                    name: '黄越100100100',
+                    address: '上海市100100100100',
+                    status:'成功',
+                    duoxuan:'多选',
+                    id:'100'
                 }]
             this.tableData = {
                     'content':_data,
